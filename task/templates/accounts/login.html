@@ -1,0 +1,15 @@
+<h2>Iniciar sesion</h2>
+{%if error%}
+<p style="color:red">{{error}}</p>
+{%endif%}
+
+<form method ="POST">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Usuario" required>
+    <input type="password" name="password" placeholder="Contrasenia" required>
+
+    <button type="submit">Entrar</button>
+
+</form>
+
+<p>No tienes cuenta? <a href="accounts/register/">Registrate aqui </a> </p>

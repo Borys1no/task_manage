@@ -1,15 +1,16 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import TaskForm
 from .models import Task
 
-
+@login_required
 def task_list(request):
     tasks = Task.objects.all()
-    return render(request, 'tasks/task_list.html', {
+    return render(request, 'task/task_list.html', {
         'tasks': tasks
     })
 
-
+@login_required
 def task_create(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
