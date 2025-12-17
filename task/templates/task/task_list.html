@@ -9,6 +9,11 @@
             {%for task in tasks%}
             <li>
                 <strong>{{task.title}}</strong> - {{task.status}}
+                <a href="{% url 'task_edit' task.id%}">Editar</a>
+                <form method="POST" action="{% url 'task_delete' task.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
             </li>
             {%empty%}
             <li>No hay tareas</li>

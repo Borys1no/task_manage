@@ -30,7 +30,7 @@ def task_create(request):
 
 def task_edit(request, id):
     task = get_object_or_404(Task, id=id, user=request.user)
-    if resquest.method == 'POST':
+    if request.method == 'POST':
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
@@ -39,4 +39,16 @@ def task_edit(request, id):
         form = TaskForm(instance=task)
 
     return render(request, 'task/task_edit.html', {'form':form})
+    
+
+@login_required
+
+def task_delete(request, id):
+    task = get_object_or_404(Task, id=id, user=request.user)
+
+    if request.method == 'POST':
+        task.delete()
+        return redirect('task_list')
+    return redirect('task_list')
+
     
