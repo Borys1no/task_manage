@@ -8,7 +8,24 @@
         <ul>
             {%for task in tasks%}
             <li>
-                <strong>{{task.title}}</strong> - {{task.status}}
+                {% if task.completed %}
+                    <s>{{task.title}}  </s>
+                {% else %}
+                {{task.title}} {{task.status}}
+                {% endif %}
+                <form method="POST" action="{%url 'task_toggle'  task.id%}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">
+                        {%if task.completed%}
+                            Marcar como pendiente
+                        {%else%}
+                            Marcar como completada
+                        {%endif%} 
+
+                    </button> 
+
+                </form>
+
                 <a href="{% url 'task_edit' task.id%}">Editar</a>
                 <form method="POST" action="{% url 'task_delete' task.id %}" style="display:inline;">
                     {% csrf_token %}

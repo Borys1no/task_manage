@@ -5,7 +5,7 @@ from .models import Task
 
 @login_required
 def task_list(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.filter(user=request.user)
     return render(request, 'task/task_list.html', {
         'tasks': tasks
     })
@@ -18,7 +18,7 @@ def task_create(request):
             task = form.save(commit=False)
             task.user = request.user
             task.save()
-            return redirect('task list')
+            return redirect('task_list')
     else:
         form = TaskForm()
     return render(request, 'task/task_create.html',{
@@ -51,4 +51,14 @@ def task_delete(request, id):
         return redirect('task_list')
     return redirect('task_list')
 
-    
+
+@login_required
+def task_toggle(request, id):
+    task = get_object_or_404(Task, id=id, user=request.user)
+
+    if request.method == 'POST':
+        task.completed = not task.completed
+        task.save()
+    return redirect('task_list')
+
+
