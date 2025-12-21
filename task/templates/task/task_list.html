@@ -7,6 +7,9 @@
         <h1>Tareas</h1>
         <ul>
             {%for task in tasks%}
+            <a href="{%url 'task_list' %}">Todas</a>
+            <a href="?status=pending">Pendientes</a>
+            <a href="?status=completed">Completadas</a>
             <li>
                 {% if task.completed %}
                     <s>{{task.title}}  </s>

@@ -5,9 +5,17 @@ from .models import Task
 
 @login_required
 def task_list(request):
+    status = request.GET.get('status')
     tasks = Task.objects.filter(user=request.user)
+
+    if status == 'pending':
+        tasks = tasks.filter(completed=False)
+    elif status == 'completed':
+        tasks = tasks.filter(completed=True)
+
     return render(request, 'task/task_list.html', {
-        'tasks': tasks
+        'tasks': tasks,
+        'status': status
     })
 
 @login_required
