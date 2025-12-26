@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'task',
     'accounts',
+    'rest_framework',
 ]
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'task_list'
