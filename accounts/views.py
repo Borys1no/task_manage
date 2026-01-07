@@ -1,8 +1,15 @@
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegisterForm
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework import generics, permissions
+from .serializers import RegisterSerializer
+from django.contrib.auth.models import User
+from .authentication import CsrfExempSessionAuthentication
 
-def register_view(request):
+def register_html_view(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -34,4 +41,11 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+@method_decorator(csrf_exempt, name='dispatch')
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = [CsrfExempSessionAuthentication]
 
